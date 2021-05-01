@@ -5,7 +5,6 @@ def blueGreenFix(fileName, saveFileName, greenData, blueData):
     
     im = Image.open(fileName)
     width, height = im.size
-    pixels = width * height
     origPixelMap = im.load()
     red = []
     green = []
@@ -20,8 +19,8 @@ def blueGreenFix(fileName, saveFileName, greenData, blueData):
 
     greenMean = greenData[0]
     greenSTD = greenData[1]
-    blueSTD = blueData[0]
-    blueMean = blueData[1]
+    blueMean = blueData[0]
+    blueSTD = blueData[1]
     mu, sigma = 127, 30
 
     greenTransformed = []
