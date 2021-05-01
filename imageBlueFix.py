@@ -75,4 +75,4 @@ plt.show()"""
 for x in range(width):
     for y in range(height):
         origPixelMap[x, y] = (red[x * height + y], greenTransformed[x * height + y], blueTransformed[x * height + y])
-im.save('TransformedTurtle.jpg')
+im.save('transformedTurtle.jpg')
