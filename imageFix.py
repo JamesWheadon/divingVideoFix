@@ -1,5 +1,6 @@
 from PIL import Image
 import matplotlib.pyplot as plt
+import numpy as np
 im = Image.open('TurtleImage.jpg')
 width, height = im.size
 origPixelMap = im.load()
@@ -12,9 +13,10 @@ for x in range(width):
         red.append(pixelColour[0])
         green.append(pixelColour[1])
         blue.append(pixelColour[2])
-plt.plot(red)
-plt.show()
-plt.plot(green)
-plt.show()
-plt.plot(blue)
+uniqueRed, countsRed = np.unique(red, return_counts=True)
+uniqueGreen, countsGreen = np.unique(green, return_counts=True)
+uniqueBlue, countsBlue = np.unique(blue, return_counts=True)
+plt.plot(uniqueRed, countsRed, color='red')
+plt.plot(uniqueGreen, countsGreen, color='green')
+plt.plot(uniqueBlue, countsBlue, color='blue')
 plt.show()
