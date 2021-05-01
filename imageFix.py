@@ -28,14 +28,14 @@ greenSTD = np.std(green)
 print(redMean, redSTD)
 print(greenMean, greenSTD)
 print(blueMean, blueSTD)
-plt.plot(uniqueRed, countsRed / pixels, color='red')
-plt.plot(uniqueGreen, countsGreen / pixels, color='green')
-plt.plot(uniqueBlue, countsBlue / pixels, color='blue')
 mu, sigma = 127, 30
 x = np.linspace(mu - 3*sigma, mu + 3*sigma, 1000)
 y = stats.norm.pdf(x, mu, sigma)
+"""plt.plot(uniqueRed, countsRed / pixels, color='red')
+plt.plot(uniqueGreen, countsGreen / pixels, color='green')
+plt.plot(uniqueBlue, countsBlue / pixels, color='blue')
 plt.plot(x, y, color='black')
-plt.show()
+plt.show()"""
 redTransformed = []
 for r in red:
     diff = ((r - redMean) / redSTD)
@@ -46,7 +46,33 @@ for r in red:
         newValue = 255
     redTransformed.append(newValue)
 uniqueRedTransformed, countsRedTransformed = np.unique(redTransformed, return_counts=True)
-plt.plot(uniqueRedTransformed, countsRedTransformed, color='violet')
-plt.plot(uniqueRed, countsRed, color='red')
+greenTransformed = []
+for g in green:
+    diff = ((g - greenMean) / greenSTD)
+    newValue = round(mu + diff*sigma)
+    if newValue < 0:
+        newValue = 0
+    if newValue > 255:
+        newValue = 255
+    greenTransformed.append(newValue)
+uniqueGreenTransformed, countsGreenTransformed = np.unique(greenTransformed, return_counts=True)
+blueTransformed = []
+for b in blue:
+    diff = ((b - blueMean) / blueSTD)
+    newValue = round(mu + diff*sigma)
+    if newValue < 0:
+        newValue = 0
+    if newValue > 255:
+        newValue = 255
+    blueTransformed.append(newValue)
+uniqueBlueTransformed, countsBlueTransformed = np.unique(blueTransformed, return_counts=True)
+"""plt.plot(uniqueRedTransformed, countsRedTransformed, color='red')
+plt.plot(uniqueGreenTransformed, countsGreenTransformed, color='green')
+plt.plot(uniqueBlueTransformed, countsBlueTransformed, color='blue')
 plt.plot(x, y, color='black')
-plt.show()
+plt.show()"""
+
+for x in range(width):
+    for y in range(height):
+        origPixelMap[x, y] = (redTransformed[x * height + y], greenTransformed[x * height + y], blueTransformed[x * height + y])
+im.save('transformedTurtle.jpg')
