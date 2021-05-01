@@ -36,3 +36,17 @@ x = np.linspace(mu - 3*sigma, mu + 3*sigma, 1000)
 y = stats.norm.pdf(x, mu, sigma)
 plt.plot(x, y, color='black')
 plt.show()
+redTransformed = []
+for r in red:
+    diff = ((r - redMean) / redSTD)
+    newValue = round(mu + diff*sigma)
+    if newValue < 0:
+        newValue = 0
+    if newValue > 255:
+        newValue = 255
+    redTransformed.append(newValue)
+uniqueRedTransformed, countsRedTransformed = np.unique(redTransformed, return_counts=True)
+plt.plot(uniqueRedTransformed, countsRedTransformed, color='violet')
+plt.plot(uniqueRed, countsRed, color='red')
+plt.plot(x, y, color='black')
+plt.show()
