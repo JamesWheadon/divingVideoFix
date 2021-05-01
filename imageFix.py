@@ -16,9 +16,9 @@ for x in range(width):
         red.append(pixelColour[0])
         green.append(pixelColour[1])
         blue.append(pixelColour[2])
-uniqueRed, countsRed = np.unique(red, return_counts=True)
+"""uniqueRed, countsRed = np.unique(red, return_counts=True)
 uniqueGreen, countsGreen = np.unique(green, return_counts=True)
-uniqueBlue, countsBlue = np.unique(blue, return_counts=True)
+uniqueBlue, countsBlue = np.unique(blue, return_counts=True)"""
 redMean = np.mean(red)
 redSTD = np.std(red)
 greenMean = np.mean(green)
@@ -36,7 +36,7 @@ plt.plot(uniqueGreen, countsGreen / pixels, color='green')
 plt.plot(uniqueBlue, countsBlue / pixels, color='blue')
 plt.plot(x, y, color='black')
 plt.show()"""
-redTransformed = []
+"""redTransformed = []
 for r in red:
     diff = ((r - redMean) / redSTD)
     newValue = round(mu + diff*sigma)
@@ -45,7 +45,7 @@ for r in red:
     if newValue > 255:
         newValue = 255
     redTransformed.append(newValue)
-uniqueRedTransformed, countsRedTransformed = np.unique(redTransformed, return_counts=True)
+uniqueRedTransformed, countsRedTransformed = np.unique(redTransformed, return_counts=True)"""
 greenTransformed = []
 for g in green:
     diff = ((g - greenMean) / greenSTD)
@@ -74,5 +74,5 @@ plt.show()"""
 
 for x in range(width):
     for y in range(height):
-        origPixelMap[x, y] = (redTransformed[x * height + y], greenTransformed[x * height + y], blueTransformed[x * height + y])
-im.save('transformedTurtle.jpg')
+        origPixelMap[x, y] = (red[x * height + y], greenTransformed[x * height + y], blueTransformed[x * height + y])
+im.save('TransformedTurtle.jpg')
