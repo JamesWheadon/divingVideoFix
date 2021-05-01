@@ -6,44 +6,29 @@ def blueGreenFix(fileName, saveFileName, greenData, blueData):
     im = Image.open(fileName)
     width, height = im.size
     origPixelMap = im.load()
-    red = []
-    green = []
-    blue = []
-
-    for x in range(width):
-        for y in range(height):
-            pixelColour = origPixelMap[x, y]
-            red.append(pixelColour[0])
-            green.append(pixelColour[1])
-            blue.append(pixelColour[2])
-
     greenMean = greenData[0]
     greenSTD = greenData[1]
     blueMean = blueData[0]
     blueSTD = blueData[1]
     mu, sigma = 127, 30
 
-    greenTransformed = []
-    for g in green:
-        diff = ((g - greenMean) / greenSTD)
-        newValue = round(mu + diff*sigma)
-        if newValue < 0:
-            newValue = 0
-        if newValue > 255:
-            newValue = 255
-        greenTransformed.append(newValue)
-
-    blueTransformed = []
-    for b in blue:
-        diff = ((b - blueMean) / blueSTD)
-        newValue = round(mu + diff*sigma)
-        if newValue < 0:
-            newValue = 0
-        if newValue > 255:
-            newValue = 255
-        blueTransformed.append(newValue)
-
     for x in range(width):
         for y in range(height):
-            origPixelMap[x, y] = (red[x * height + y], greenTransformed[x * height + y], blueTransformed[x * height + y])
+            pixelColour = origPixelMap[x, y]
+            green = pixelColour[1]
+            greenDiff = ((green - greenMean) / greenSTD)
+            newGreenValue = round(mu + greenDiff*sigma)
+            if newGreenValue < 0:
+                newGreenValue = 0
+            if newGreenValue > 255:
+                newGreenValue = 255
+            blue = pixelColour[2]
+            blueDiff = ((blue - blueMean) / blueSTD)
+            newBlueValue = round(mu + greenDiff*sigma)
+            if newBlueValue < 0:
+                newBlueValue = 0
+            if newBlueValue > 255:
+                newBlueValue = 255
+            origPixelMap[x, y] = [pixelColour[0], newGreenValue, newBlueValue]
+
     im.save(saveFileName)

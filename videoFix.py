@@ -24,7 +24,7 @@ for x in range(width):
 greenData = (np.mean(green), np.std(green))
 blueData = (np.mean(blue), np.std(blue))
 
-for frame in tempFiles:
+for frame in files:
     blueGreenFix(frameFolder + frame, fixedFrameFolder + "fixed" + frame, greenData, blueData)
     print(frame)
 
