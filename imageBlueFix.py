@@ -51,7 +51,7 @@ def numpyFix(fileName, saveFileName, greenData, blueData):
 
     npImage.save(saveFileName)
 
-"""im = Image.open('TurtleImage.jpg')
+im = Image.open('TurtleImage.jpg')
 width, height = im.size
 origPixelMap = im.load()
 print(origPixelMap[0, 0])
@@ -74,10 +74,9 @@ mu, sigma = 127, 30
 print(blueData, greenData)
 
 pixels = np.array(im)
-print(pixels.shape)
 
-pixels_green = (mu + sigma*((pixels - greenMean) / greenSTD))
-pixels_blue = (mu + sigma*((pixels - blueMean) / blueSTD))
-pixels_fix = np.clip((pixels_green).astype(int), 0, 255)
-print(pixels_fix)
-npImage = Image.fromarray(np.uint8(pixels_fix)).show()"""
+pixels_green = (mu + sigma*((pixels[:, :, 1] - greenMean) / greenSTD))
+pixels_blue = (mu + sigma*((pixels[:, :, 2] - blueMean) / blueSTD))
+rgbPixels = np.dstack([pixels[:, :, 0], pixels_green, pixels_blue])
+pixels_fix = np.clip((rgbPixels).astype(int), 0, 255)
+npImage = Image.fromarray(np.uint8(pixels_fix)).show()
