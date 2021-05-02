@@ -4,7 +4,7 @@ import numpy as np
 from imageBlueFix import blueGreenFix, numpyFix
 from extractFrames import extractFrames, writeFrames
 
-def fixVideo(videoFile, fixedName=False):
+def fixVideo(videoFile, fixedName=False, frameRate=24):
 
     subject = videoFile.split('.')[0]
     originalFrames = './' + subject + 'frames/'
@@ -30,7 +30,7 @@ def fixVideo(videoFile, fixedName=False):
         numpyFix(originalFrames + frame, fixedFrames + frame, greenData, blueData)
         print(frame)
     
-    if !fixedName:
+    if not fixedName:
         fixedName = 'fixed' + subject + '.MP4'
 
-    writeFrames(fixedFrames, fixedName)
+    writeFrames(fixedFrames, fixedName, frameRate)

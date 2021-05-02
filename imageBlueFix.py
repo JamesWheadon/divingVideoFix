@@ -36,7 +36,6 @@ def blueGreenFix(fileName, saveFileName, greenData, blueData):
 def numpyFix(fileName, saveFileName, greenData, blueData):
     
     im = Image.open(fileName)
-    width, height = im.size
     greenMean = greenData[0]
     greenSTD = greenData[1]
     blueMean = blueData[0]
