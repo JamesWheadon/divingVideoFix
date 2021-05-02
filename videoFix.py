@@ -1,13 +1,15 @@
 import os
 from PIL import Image
 import numpy as np
-from imageBlueFix import blueGreenFix
+from imageBlueFix import blueGreenFix, numpyFix
 from extractFrames import extractFrames, writeFrames
 
 files = sorted(os.listdir('./turtleFrames'), key=len)
-
+files = files[100:1500]
+print(files[0], files[-1])
+print('hello')
 frameFolder = './turtleFrames/'
-fixedFrameFolder = './fixedTurtleFrames/'
+fixedFrameFolder = './numpyTurtleFrames/'
 
 im = Image.open(frameFolder + files[0])
 width, height = im.size
@@ -25,7 +27,7 @@ greenData = (np.mean(green), np.std(green))
 blueData = (np.mean(blue), np.std(blue))
 
 for frame in files:
-    blueGreenFix(frameFolder + frame, fixedFrameFolder + "fixed" + frame, greenData, blueData)
+    numpyFix(frameFolder + frame, fixedFrameFolder + "numpy" + frame, greenData, blueData)
     print(frame)
 
-writeFrames('./fixedTurtleFrames/', 'fixedTurtle.MP4')
+writeFrames('./numpyTurtleFrames/', 'numpyTurtle.MP4')

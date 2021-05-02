@@ -33,7 +33,7 @@ def blueGreenFix(fileName, saveFileName, greenData, blueData):
 
     im.save(saveFileName)
 
-def blueGreenFix(fileName, saveFileName, greenData, blueData):
+def numpyFix(fileName, saveFileName, greenData, blueData):
     
     im = Image.open(fileName)
     width, height = im.size
@@ -44,6 +44,7 @@ def blueGreenFix(fileName, saveFileName, greenData, blueData):
     blueSTD = blueData[1]
     mu, sigma = 127, 30
     
+    pixels = np.array(im)
     pixels_green = (mu + sigma*((pixels - greenMean) / greenSTD))
     pixels_fix = np.clip((pixels_green).astype(int), 0, 255)
     npImage = Image.fromarray(np.uint8(pixels_fix))
