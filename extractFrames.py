@@ -22,3 +22,5 @@ def writeFrames(frameFolder, videoName):
         im = cv2.imread(frameFolder + frame)
         out.write(im)
     out.release()
+
+writeFrames('./fixedTurtleFrames/', 'fixedTurtle.MP4')
