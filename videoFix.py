@@ -4,30 +4,33 @@ import numpy as np
 from imageBlueFix import blueGreenFix, numpyFix
 from extractFrames import extractFrames, writeFrames
 
-files = sorted(os.listdir('./turtleFrames'), key=len)
-files = files[100:1500]
-print(files[0], files[-1])
-print('hello')
-frameFolder = './turtleFrames/'
-fixedFrameFolder = './numpyTurtleFrames/'
+def fixVideo(videoFile, fixedName=False):
 
-im = Image.open(frameFolder + files[0])
-width, height = im.size
-origPixelMap = im.load()
-green = []
-blue = []
+    subject = videoFile.split('.')[0]
+    originalFrames = './' + subject + 'frames/'
+    fixedFrames = './fixed' + subject + 'frames/'
 
-for x in range(width):
-    for y in range(height):
-        pixelColour = origPixelMap[x, y]
-        green.append(pixelColour[1])
-        blue.append(pixelColour[2])
+    os.mkdir(originalFrames)
+    os.mkdir(fixedFrames)
 
-greenData = (np.mean(green), np.std(green))
-blueData = (np.mean(blue), np.std(blue))
+    extractFrames(videoFile, originalFrames, subject)
 
-for frame in files:
-    numpyFix(frameFolder + frame, fixedFrameFolder + "numpy" + frame, greenData, blueData)
-    print(frame)
+    files = sorted(os.listdir(originalFrames), key=len)
 
-writeFrames('./numpyTurtleFrames/', 'numpyTurtle.MP4')
+    im = Image.open(originalFrames + files[0])
+    width, height = im.size
+    pixels = np.array(im)
+    green = pixels[:, :, 1]
+    blue = pixels[:, :, 2]
+
+    greenData = (np.mean(green), np.std(green))
+    blueData = (np.mean(blue), np.std(blue))
+
+    for frame in files:
+        numpyFix(originalFrames + frame, fixedFrames + frame, greenData, blueData)
+        print(frame)
+    
+    if !fixedName:
+        fixedName = 'fixed' + subject + '.MP4'
+
+    writeFrames(fixedFrames, fixedName)

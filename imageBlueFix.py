@@ -37,7 +37,6 @@ def numpyFix(fileName, saveFileName, greenData, blueData):
     
     im = Image.open(fileName)
     width, height = im.size
-    origPixelMap = im.load()
     greenMean = greenData[0]
     greenSTD = greenData[1]
     blueMean = blueData[0]
@@ -45,38 +44,9 @@ def numpyFix(fileName, saveFileName, greenData, blueData):
     mu, sigma = 127, 30
     
     pixels = np.array(im)
-    pixels_green = (mu + sigma*((pixels - greenMean) / greenSTD))
-    pixels_fix = np.clip((pixels_green).astype(int), 0, 255)
+    pixels_green = (mu + sigma*((pixels[:, :, 1] - greenMean) / greenSTD))
+    pixels_blue = (mu + sigma*((pixels[:, :, 2] - blueMean) / blueSTD))
+    pixels_fix = np.clip((np.dstack([pixels[:, :, 0], pixels_green, pixels_blue])).astype(int), 0, 255)
     npImage = Image.fromarray(np.uint8(pixels_fix))
 
     npImage.save(saveFileName)
-
-im = Image.open('TurtleImage.jpg')
-width, height = im.size
-origPixelMap = im.load()
-print(origPixelMap[0, 0])
-green = []
-blue = []
-
-for x in range(width):
-    for y in range(height):
-        pixelColour = origPixelMap[x, y]
-        green.append(pixelColour[1])
-        blue.append(pixelColour[2])
-
-greenData = (np.mean(green), np.std(green))
-blueData = (np.mean(blue), np.std(blue))
-greenMean = greenData[0]
-greenSTD = greenData[1]
-blueMean = blueData[0]
-blueSTD = blueData[1]
-mu, sigma = 127, 30
-print(blueData, greenData)
-
-pixels = np.array(im)
-
-pixels_green = (mu + sigma*((pixels[:, :, 1] - greenMean) / greenSTD))
-pixels_blue = (mu + sigma*((pixels[:, :, 2] - blueMean) / blueSTD))
-rgbPixels = np.dstack([pixels[:, :, 0], pixels_green, pixels_blue])
-pixels_fix = np.clip((rgbPixels).astype(int), 0, 255)
-npImage = Image.fromarray(np.uint8(pixels_fix)).show()
